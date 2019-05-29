@@ -3,4 +3,3 @@ npm-debug.log
 .idea
 log/*.log
 client/bower_components
-bin
