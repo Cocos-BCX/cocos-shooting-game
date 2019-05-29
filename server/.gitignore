@@ -1,0 +1,6 @@
+node_modules
+npm-debug.log
+.idea
+log/*.log
+client/bower_components
+bin

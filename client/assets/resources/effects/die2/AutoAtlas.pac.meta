@@ -1,0 +1,18 @@
+{
+  "ver": "1.2.0",
+  "uuid": "b9d6977c-fc94-4079-90f0-14972d8748e0",
+  "maxWidth": 1024,
+  "maxHeight": 1024,
+  "padding": 2,
+  "allowRotation": true,
+  "forceSquared": false,
+  "powerOfTwo": true,
+  "heuristices": "BestAreaFit",
+  "format": "png",
+  "quality": 80,
+  "contourBleed": false,
+  "paddingBleed": false,
+  "filterUnused": false,
+  "platformSettings": {},
+  "subMetas": {}
+}

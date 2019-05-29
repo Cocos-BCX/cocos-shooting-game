@@ -1,0 +1,32 @@
+{
+  "ver": "2.3.0",
+  "uuid": "160c57a9-1a85-438b-b7eb-6ae7e2efaea6",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "platformSettings": {},
+  "subMetas": {
+    "homeButtonSound22": {
+      "ver": "1.0.3",
+      "uuid": "ce27056b-4b3e-43f0-8cd1-c07ac02946af",
+      "rawTextureUuid": "160c57a9-1a85-438b-b7eb-6ae7e2efaea6",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0.5,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 100,
+      "height": 83,
+      "rawWidth": 100,
+      "rawHeight": 84,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

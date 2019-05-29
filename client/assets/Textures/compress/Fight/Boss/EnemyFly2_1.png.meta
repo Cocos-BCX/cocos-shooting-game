@@ -1,0 +1,32 @@
+{
+  "ver": "2.3.0",
+  "uuid": "77f5b8b8-34a7-42d7-bf5b-207f564da2e3",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "platformSettings": {},
+  "subMetas": {
+    "EnemyFly2_1": {
+      "ver": "1.0.3",
+      "uuid": "8f366145-051d-4092-94f9-014bd6efbe68",
+      "rawTextureUuid": "77f5b8b8-34a7-42d7-bf5b-207f564da2e3",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 5,
+      "trimX": 0,
+      "trimY": 17,
+      "width": 640,
+      "height": 380,
+      "rawWidth": 640,
+      "rawHeight": 424,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

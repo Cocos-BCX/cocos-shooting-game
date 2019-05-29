@@ -1,0 +1,32 @@
+{
+  "ver": "2.3.0",
+  "uuid": "0740caa0-c6e8-47f1-ac13-60fff700c99a",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "platformSettings": {},
+  "subMetas": {
+    "trading_market": {
+      "ver": "1.0.3",
+      "uuid": "b3840214-15b4-46fe-a371-cd7ff11b2c97",
+      "rawTextureUuid": "0740caa0-c6e8-47f1-ac13-60fff700c99a",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 270,
+      "height": 75,
+      "rawWidth": 270,
+      "rawHeight": 75,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

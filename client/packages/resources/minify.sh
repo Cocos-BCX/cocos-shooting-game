@@ -1,0 +1,2 @@
+cnpm install
+gulp imgminify

@@ -1,0 +1,32 @@
+{
+  "ver": "2.3.0",
+  "uuid": "7625c23e-89cd-4fb7-b7a8-4a765468447d",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "platformSettings": {},
+  "subMetas": {
+    "homeButtonQuestion2": {
+      "ver": "1.0.3",
+      "uuid": "a6a64d05-ccd6-4c55-a1d6-cb5210cf0111",
+      "rawTextureUuid": "7625c23e-89cd-4fb7-b7a8-4a765468447d",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0.5,
+      "offsetY": 0.5,
+      "trimX": 1,
+      "trimY": 0,
+      "width": 99,
+      "height": 83,
+      "rawWidth": 100,
+      "rawHeight": 84,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
