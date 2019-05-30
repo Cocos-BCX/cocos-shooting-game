@@ -31,9 +31,10 @@ let BCXAdpater = cc.Class({
     // onLoad () {},
 
     start () {
-    
+        console.info("window=1=",window.BcxWeb);
+        
         if (window.BcxWeb) {
-            this.bcl = window.BcxWeb && window.BcxWeb.BCX ? window.BcxWeb.BCX: window.BcxWeb;
+            this.bcl =  window.BcxWeb;
         }else{
             var _configParams = {
                 ws_node_list: [{
@@ -149,6 +150,7 @@ let BCXAdpater = cc.Class({
 
     login:function(callback){
         //非客户端钱包 浏览器插件 android等 会直接挂到window上的
+        console.info("window.BcxWeb==",window.BcxWeb);
         if (window.BcxWeb){
             if(this.bcl){
                 console.info("account_name==",this.bcl.account_name);
