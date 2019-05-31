@@ -13,7 +13,7 @@ const constants = require('constants');
 
 var SERVER_URL = "http://shooter.cocosbcx.net/plane"; //服务器地址
 if (cc.game.config.debugMode === cc.debug.DebugMode.INFO) {
-    SERVER_URL = "http://192.168.192.179:3000";
+    SERVER_URL = "http://127.0.0.1:3000";
 }
 console.log('>>>>>>>>cc.game.config.debugMode='+cc.game.config.debugMode);
 console.log('>>>>>>>>SERVER_URL='+SERVER_URL);
@@ -156,14 +156,23 @@ let BCXAdpater = cc.Class({
             if(this.bcl){
                 console.info("account_name==",this.bcl.account_name);
                 //获取用户信息 因为本游戏需要用到userid 所以多了次步骤
-
-                this.bcl.getAccountInfo().then(function(res){
-                    self.bcl.account_name = res.account_name
-                    playerData.account =res.account_name
-                    //playerData.saveAccount(res.account_name)
-                    callback(null);
-                    console.log("account_info---"+JSON.stringify(res))
-                })
+                try{
+                    this.bcl.getAccountInfo().then(function(res){
+                        self.bcl.account_name = res.account_name
+                        playerData.account =res.account_name
+                        //playerData.saveAccount(res.account_name)
+                        callback(null);
+                        console.log("account_info---"+JSON.stringify(res))
+                    })
+                }catch(e){
+                    //兼容老版本 老版本getAccountInfo().then 非pc版本会报错
+                    if(self.bcl.account_name){
+                        playerData.account =res.account_name
+                        callback(null);
+                    }
+                    
+                }
+               
             }else{
                 if (callback) {
                     callback("登录失败");
