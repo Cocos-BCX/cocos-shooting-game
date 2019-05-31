@@ -47,7 +47,7 @@ cc.Class({
 
         this.refreshChangeBtn();
 
-        this.refreshPilotInfo();
+        this.refreshPilotInfo();      
     },
 
     onEnable: function () {
@@ -60,7 +60,7 @@ cc.Class({
             if (err) {
                 cc.gameSpace.showTips(err);
             } else {
-                _this.txtCocos.string = Number(result.data.COCOS).toFixed(1);
+                _this.txtCocos.string =result.data.COCOS.toFixed(1);
             }
         });
     },
@@ -75,29 +75,30 @@ cc.Class({
         var _this = this;
         bcxAdapter.getItems(function (err, res) {
             _this.isGetItemFinished = true;
-            _this.loadFightScene();
+            //_this.loadFightScene();
+
+            bcxAdapter.reqStartGame((err, respData) => {
+                console.log("bcxAdapter.reqStartGame",err)
+                _this.isCostFinished = true;
+                if (!err) {
+                    console.log("reqStartGame1")
+                    //付费成功
+                    cc.gameSpace.showLoading(cc.gameSpace.text.deduct_Coin+"(" + constants.START_GAME_CONSUME + ")"+cc.gameSpace.text.success+cc.gameSpace.enter_battlefield);
+    
+                    _this.loadFightScene();
+                } else {
+                    console.log("reqStartGame2")
+                    cc.gameSpace.hideLoading();
+                    cc.gameSpace.showTips(err);
+                }
+            });
         });
 
-        bcxAdapter.reqStartGame((err, respData) => {
-            this.isCostFinished = true;
-            if (!err) {
-                console.log("reqStartGame1")
-                //付费成功
-                cc.gameSpace.showLoading(cc.gameSpace.text.deduct_Coin+"(" + constants.START_GAME_CONSUME + ")"+cc.gameSpace.text.success+cc.gameSpace.enter_battlefield);
-
-                this.loadFightScene();
-            } else {
-                console.log("reqStartGame2")
-                cc.gameSpace.hideLoading();
-                cc.gameSpace.showTips(err);
-            }
-        });
+        
     },
 
     loadFightScene: function () {
-        console.log("this.isGetItemFinished"+this.isGetItemFinished)
-        console.log("this.isCostFinished"+this.isCostFinished)
-        if (!this.this.isCostFinished || !this.isCostFinished) {
+        if (!this.isGetItemFinished || !this.isCostFinished) {
             return;
         }
 

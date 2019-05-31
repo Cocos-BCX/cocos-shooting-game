@@ -152,12 +152,18 @@ let BCXAdpater = cc.Class({
         //非客户端钱包 浏览器插件 android等 会直接挂到window上的
         console.info("window.BcxWeb==",window.BcxWeb);
         if (window.BcxWeb){
+            let self = this
             if(this.bcl){
                 console.info("account_name==",this.bcl.account_name);
-                playerData.account = this.bcl.account_name;
-                if (callback) {
+                //获取用户信息 因为本游戏需要用到userid 所以多了次步骤
+
+                this.bcl.getAccountInfo().then(function(res){
+                    self.bcl.account_name = res.account_name
+                    playerData.account =res.account_name
+                    //playerData.saveAccount(res.account_name)
                     callback(null);
-                }
+                    console.log("account_info---"+JSON.stringify(res))
+                })
             }else{
                 if (callback) {
                     callback("登录失败");
@@ -261,7 +267,8 @@ let BCXAdpater = cc.Class({
     getBalance (callback) {
         this.getBalanceByAccount(playerData.account, function(err, res) {
             if (!err) {
-                playerData.gold = Number(res.data.COCOS);
+                res.data.COCOS = Number(res.data.COCOS)
+                playerData.gold = res.data.COCOS 
                 //console.info('playerData.gold==',playerData.gold);
             }
 
@@ -307,7 +314,7 @@ let BCXAdpater = cc.Class({
             console.log("res-getItems--"+JSON.stringify(res));
 
             //更新playerData里头的道具列表
-            if (res.code === 1) {
+            if (res.code == 1) {
                 playerData.goods = res.data;
                 callback(null, res);
             } else {
@@ -365,18 +372,12 @@ let BCXAdpater = cc.Class({
             memo: memo,
             onlyGetFee: false,
         }).then(function(res){
-            console.log("transferToDeveloper=="+JSON.stringify(res));
-
             if (res.code == 1) {
-                console.log("res.code=1="+JSON.stringify(res));
                 callback(null, res);
             } else {
-                console.log("res.code=2="+JSON.stringify(res));
                 callback(res.message, res);
             }
-        }).catch(function(e){
-            console.log("transferToDeveloper=eee="+JSON.stringify(e));
-        });
+        })
     },
 
     /**
@@ -433,6 +434,7 @@ let BCXAdpater = cc.Class({
 
     reqStartGame: function (callback) {
         this.transferToDeveloper(constants.START_GAME_CONSUME, "newGame", function (err, res) {
+            console.log("reqStartGame=")
             callback(err, res);
         });
     },
