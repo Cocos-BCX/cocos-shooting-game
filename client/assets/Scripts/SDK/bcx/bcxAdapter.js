@@ -11,7 +11,7 @@
 const playerData = require('playerData');
 const constants = require('constants');
 
-var SERVER_URL = "http://api-dev.cjfan.net/plane/"; //服务器地址
+var SERVER_URL = "http://shooter.cocosbcx.net/plane/"; //服务器地址
 if (cc.game.config.debugMode === cc.debug.DebugMode.INFO) {
     SERVER_URL = "http://127.0.0.1:3000";
 }
