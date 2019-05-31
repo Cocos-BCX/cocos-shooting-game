@@ -13,7 +13,7 @@ const constants = require('constants');
 
 var SERVER_URL = "http://shooter.cocosbcx.net/plane"; //服务器地址
 if (cc.game.config.debugMode === cc.debug.DebugMode.INFO) {
-    SERVER_URL = "http://127.0.0.1:3000";
+    SERVER_URL = "http://192.168.192.179:3000";
 }
 console.log('>>>>>>>>cc.game.config.debugMode='+cc.game.config.debugMode);
 console.log('>>>>>>>>SERVER_URL='+SERVER_URL);
@@ -261,7 +261,8 @@ let BCXAdpater = cc.Class({
     getBalance (callback) {
         this.getBalanceByAccount(playerData.account, function(err, res) {
             if (!err) {
-                playerData.gold = res.data.COCOS;
+                playerData.gold = Number(res.data.COCOS);
+                //console.info('playerData.gold==',playerData.gold);
             }
 
             callback(err, res);
@@ -270,25 +271,25 @@ let BCXAdpater = cc.Class({
 
     getBalanceByAccount (account, callback) {
         this.bcl.queryAccountBalances({
-            assetId_or_symbol:'COCOS',
+            assetId:'COCOS',
             account: account,
-            callback: function(res){
-                console.info('res',res);
+        
+        }).then(function(res){
+            console.info('getBalanceByAccount==',res);
 
-                if (res.code === -25 || res.code === 125) {
-                    //表示还没有这种代币，先给与赋值为0
-                    res.code = 1;
-                    res.data.COCOS = 0;
-                }
-
-                if (res.code === 1) {
-                    if (callback) {
-                        callback(null, res);
-                    }
-                } else if (callback) {
-                    callback(res.message, res);
-                }   
+            if (res.code === -25 || res.code === 125) {
+                //表示还没有这种代币，先给与赋值为0
+                res.code = 1;
+                res.data.COCOS = 0;
             }
+
+            if (res.code === 1) {
+                if (callback) {
+                    callback(null, res);
+                }
+            } else if (callback) {
+                callback(res.message, res);
+            }   
         });
     },
 
@@ -299,19 +300,18 @@ let BCXAdpater = cc.Class({
     getItems: function (callback) {
         this.bcl.queryAccountNHAssets({
             account: playerData.account,
-            versions: ['CCShooter'],
+            worldViews: ['CCShooter'],
             page: 1,
             pageSize: 1000,
-            callback: function (res) {
-                console.log(res);
+        }).then(function(res){
+            console.log("res-getItems--"+JSON.stringify(res));
 
-                //更新playerData里头的道具列表
-                if (res.code === 1) {
-                    playerData.goods = res.data;
-                    callback(null, res);
-                } else {
-                    callback(res.message, res);
-                }
+            //更新playerData里头的道具列表
+            if (res.code === 1) {
+                playerData.goods = res.data;
+                callback(null, res);
+            } else {
+                callback(res.message, res);
             }
         });
     },
@@ -361,18 +361,21 @@ let BCXAdpater = cc.Class({
             toAccount: 'ccshooter',
             amount: amount,
             assetId: 'COCOS',
+            feeAssetId:'COCOS',
             memo: memo,
             onlyGetFee: false,
         }).then(function(res){
             console.log("transferToDeveloper=="+JSON.stringify(res));
 
-            if (res.code === 1) {
+            if (res.code == 1) {
+                console.log("res.code=1="+JSON.stringify(res));
                 callback(null, res);
             } else {
+                console.log("res.code=2="+JSON.stringify(res));
                 callback(res.message, res);
             }
         }).catch(function(e){
-            console.log("transferToDeveloper=="+JSON.stringify(e));
+            console.log("transferToDeveloper=eee="+JSON.stringify(e));
         });
     },
 
@@ -537,18 +540,17 @@ let BCXAdpater = cc.Class({
             account:playerData.account,
             pageSize:100,
             page:1,
-            callback:function(res){
-                console.info('res',res);
-                if (res.code === 1) {
-                    playerData.goodsSelling = res.data;
+        }).then(function(res){
+            console.info('res',res);
+            if (res.code === 1) {
+                playerData.goodsSelling = res.data;
 
-                    if (callback) {
-                        callback(null, res);
-                    }
-                } else {
-                    if (callback) {
-                        callback(res.message, res);
-                    }
+                if (callback) {
+                    callback(null, res);
+                }
+            } else {
+                if (callback) {
+                    callback(res.message, res);
                 }
             }
         });
@@ -562,13 +564,11 @@ let BCXAdpater = cc.Class({
     queryGameItemInfo: function (arrItemId, callback) {
         this.bcl.queryNHAssets({
             NHAssetHashOrIds: arrItemId,
-            callback: function(res) {
-                console.info("queryGameItemInfo res",res);
-                if(res.code === 1){
-                    callback(null, res);
-                } else {
-                    callback(res.message, res);
-                }
+        }).then(function(res){
+            if(res.code === 1){
+                callback(null, res);
+            } else {
+                callback(res.message, res);
             }
         })
     },
@@ -585,9 +585,6 @@ let BCXAdpater = cc.Class({
             nameOrId: this.upgradeContract,
             functionName: 'equipment_upgrade',//["1",1000001,'COCOS']
             valueList:[weaponId, playerData.getWeaponLevelById(weaponId)],////
-            callback:function(res){
-                
-            }
         }).then(function(res){
             console.info("upgrade res",JSON.stringify(res));
 
@@ -602,20 +599,6 @@ let BCXAdpater = cc.Class({
             console.info("upgradeWeapon error-==",JSON.stringify(e));
         });
     },
-
-    
-    isPC: function() {
-        const userAgentInfo = navigator.userAgent;
-        const Agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod'];
-        let flag = true;
-        for (const v of Agents) {
-          if (userAgentInfo.indexOf(v) > 0) {
-            flag = false;
-            break;
-          }
-        }
-        return flag;
-    }
 });
 
 let bcxAdapter = new BCXAdpater();

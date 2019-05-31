@@ -60,7 +60,7 @@ cc.Class({
             if (err) {
                 cc.gameSpace.showTips(err);
             } else {
-                _this.txtCocos.string = result.data.COCOS.toFixed(1);
+                _this.txtCocos.string = Number(result.data.COCOS).toFixed(1);
             }
         });
     },
@@ -81,11 +81,13 @@ cc.Class({
         bcxAdapter.reqStartGame((err, respData) => {
             this.isCostFinished = true;
             if (!err) {
+                console.log("reqStartGame1")
                 //付费成功
                 cc.gameSpace.showLoading(cc.gameSpace.text.deduct_Coin+"(" + constants.START_GAME_CONSUME + ")"+cc.gameSpace.text.success+cc.gameSpace.enter_battlefield);
 
                 this.loadFightScene();
             } else {
+                console.log("reqStartGame2")
                 cc.gameSpace.hideLoading();
                 cc.gameSpace.showTips(err);
             }
@@ -93,7 +95,9 @@ cc.Class({
     },
 
     loadFightScene: function () {
-        if (!this.isGetItemFinished || !this.isCostFinished) {
+        console.log("this.isGetItemFinished"+this.isGetItemFinished)
+        console.log("this.isCostFinished"+this.isCostFinished)
+        if (!this.this.isCostFinished || !this.isCostFinished) {
             return;
         }
 
