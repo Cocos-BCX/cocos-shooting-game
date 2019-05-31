@@ -25,8 +25,8 @@ bclService.init = function () {
     var _configParams={
         default_ws_node:"ws://47.93.62.96:8049",
         ws_node_list:[
-            {url:"ws://47.93.62.96:8049",name:"COCOS3.0节点1"},
-            {url:"ws://39.106.126.54:8049",name:"COCOS3.0节点2"}
+            {url:"ws://39.106.126.54:8049",name:"COCOS3.0节点2"},
+            {url:"ws://47.93.62.96:8049",name:"COCOS3.0节点1"}
         ],
         networks:[{
             core_asset:"COCOS",
