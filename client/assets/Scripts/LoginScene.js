@@ -59,10 +59,12 @@ cc.Class({
         // if (password) {
         //     this.edtPassword.string = password;
         // }
-        var prefab = cc.instantiate(this.select_prefab);
-        this.select_node.addChild(prefab);
+
+        // console.log("==cc==",cc)
+        // var prefab = cc.instantiate(this.select_prefab);
+        // this.select_node.addChild(prefab);
       
-        this.login()
+        //this.login()
     },
    
     onBtnLoginClick: function () {
@@ -82,6 +84,11 @@ cc.Class({
         // }
 
         // this.login(account, password);
+
+        let a = this.select_prefab
+        console.log("==window==",a)
+        var prefab = cc.instantiate(a);
+        this.select_node.addChild(prefab);
     },
 
     /**
@@ -93,21 +100,40 @@ cc.Class({
         //显示loading界面
         cc.gameSpace.showLoading(cc.gameSpace.text.logining);
 
+        console.log("login====")
+        let login_func = function(){
+            bcxAdapter.login(function (err) {
+                if (err) {
+                    cc.gameSpace.showTips(err);
+                    cc.gameSpace.hideLoading();
+                } else {
+                    // configuration.setGlobalData(constants.DATA_KEY.ACCOUNT, account);
+                    // configuration.setGlobalData(constants.DATA_KEY.PASSWORD, password); //TODO 正式的时候需要去除这个
+
+                    cc.gameSpace.showLoading(cc.gameSpace.text.loading_main+'...');
+
+                    //加载玩家数据
+                    _this.loadPlayerInfo();
+                }
+            });
+        }
         var _this = this;
-        bcxAdapter.login(function (err) {
-            if (err) {
-                cc.gameSpace.showTips(err);
-                cc.gameSpace.hideLoading();
-            } else {
-                // configuration.setGlobalData(constants.DATA_KEY.ACCOUNT, account);
-                // configuration.setGlobalData(constants.DATA_KEY.PASSWORD, password); //TODO 正式的时候需要去除这个
+        if (cc.gameSpace.SDK === 'eos') {
+            const eosAdapter = require('eosAdapter');
+            eosAdapter.initSDK(()=>{
+                cc.gameSpace.isInitFinished = true;
+                login_func()
+            });
+        } else {
+            bcxAdapter.initSDK(()=>{
+                //SDK初始华完毕
+                cc.gameSpace.isInitFinished = true;
+                login_func()
+                
+            });
+        }
 
-                cc.gameSpace.showLoading(cc.gameSpace.text.loading_main+'...');
-
-                //加载玩家数据
-                _this.loadPlayerInfo();
-            }
-        });
+        
     },
 
     loadPlayerInfo: function () {

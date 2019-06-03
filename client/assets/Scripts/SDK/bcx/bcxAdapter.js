@@ -19,9 +19,9 @@ console.log('>>>>>>>>cc.game.config.debugMode='+cc.game.config.debugMode);
 console.log('>>>>>>>>SERVER_URL='+SERVER_URL);
 
 // import BCX from 'bcx.min.js' 
-require('./core.min')
+// require('./core.min')
 
-require('./plugins.min')
+// require('./plugins.min')
 
 
 let BCXAdpater = cc.Class({
@@ -31,12 +31,52 @@ let BCXAdpater = cc.Class({
     // onLoad () {},
 
     start () {
-        console.info("window=1=",window.BcxWeb);
+        //console.info("window=1=",window.BcxWeb);
         
-        if (window.BcxWeb) {
-            this.bcl =  window.BcxWeb;
-        }else{
-            var _configParams = {
+        // if (window.BcxWeb) {
+        //     this.bcl =  window.BcxWeb;
+        // }else{
+        //     var _configParams = {
+        //         ws_node_list: [{
+        //             url: "ws://39.106.126.54:8049",
+        //             name: "COCOS3.0节点2"
+        //         }],
+        //         networks: [{
+        //             core_asset: "COCOS",
+        //             chain_id: 'b9e7cee4709ddaf08e3b7cba63b71c211c845e37c9bf2b865a7b2a592c8adb28'
+        //         }],
+        //         faucetUrl: 'http://47.93.62.96:8041',
+        //         auto_reconnect: true,
+        //         worker: false,
+        //         real_sub: true,
+        //         check_cached_nodes_data: true,
+        //     };
+        //     this.bcl = new BCX(_configParams);
+        // }
+    },
+
+    initSDK (callback) {
+        this.isLoginBcl = false;
+        this.account = null;
+        this.userId = null;
+        this.privateKey = null;
+        this.contractName = "contract.ccshooter.lottery";         //合约名称
+        this.upgradeContract = "contract.ccshooter.upgrade";  //升级的合约
+        
+        let self = this
+        //目前进来的时候可能还没有吧bcx挂在window 需要个定时器
+        let total = 0
+        let sdk_intervral = setInterval(function(){
+            
+            if (window.BcxWeb) {
+                self.bcl =  window.BcxWeb;
+                console.log("===bcl---")
+                clearInterval(sdk_intervral);
+                if (callback) {
+                    callback();
+                }
+            }else{
+                var _configParams = {
                 ws_node_list: [{
                     url: "ws://39.106.126.54:8049",
                     name: "COCOS3.0节点2"
@@ -50,24 +90,22 @@ let BCXAdpater = cc.Class({
                 worker: false,
                 real_sub: true,
                 check_cached_nodes_data: true,
-            };
-            this.bcl = new BCX(_configParams);
-        }
-    },
+                };
+                self.bcl = new BCX(_configParams);
 
-    initSDK (callback) {
-        this.isLoginBcl = false;
-        this.account = null;
-        this.userId = null;
-        this.privateKey = null;
-        this.contractName = "contract.ccshooter.lottery";         //合约名称
-        this.upgradeContract = "contract.ccshooter.upgrade";  //升级的合约
-        
-        if (callback) {
-            callback();
-        }
+                clearInterval(sdk_intervral);
+                if (callback) {
+                    callback();
+                }
+            }
+
+            if(total>=3){
+                total = 0
+                clearInterval(sdk_intervral);
+            }
+            total = total + 1
+        }, 1000);
        
-
         // this.bcl.init({
         //     autoReconnect:true,
         //     callback:function(){
@@ -617,6 +655,20 @@ let BCXAdpater = cc.Class({
             console.info("upgradeWeapon error-==",JSON.stringify(e));
         });
     },
+
+    isPC: function() {
+        const userAgentInfo = navigator.userAgent;
+        const Agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod'];
+        let flag = true;
+        for (const v of Agents) {
+          if (userAgentInfo.indexOf(v) > 0) {
+            flag = false;
+            break;
+          }
+        }
+        return flag;
+    }
+
 });
 
 let bcxAdapter = new BCXAdpater();

@@ -67,17 +67,7 @@ cc.Class({
         cc.gameSpace.isInitFinished = false;
         cc.gameSpace.isConfigLoadFinished = true;
 
-        if (cc.gameSpace.SDK === 'eos') {
-            const eosAdapter = require('eosAdapter');
-            eosAdapter.initSDK(()=>{
-                cc.gameSpace.isInitFinished = true;
-            });
-        } else {
-            bcxAdapter.initSDK(()=>{
-                //SDK初始华完毕
-                cc.gameSpace.isInitFinished = true;
-            });
-        }
+       
 
         cc.gameSpace.audioManager.playMusic('bgm', true);
 
