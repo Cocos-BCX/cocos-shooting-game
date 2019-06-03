@@ -84,11 +84,6 @@ cc.Class({
         // }
 
         // this.login(account, password);
-
-        let a = this.select_prefab
-        console.log("==window==",a)
-        var prefab = cc.instantiate(a);
-        this.select_node.addChild(prefab);
     },
 
     /**
