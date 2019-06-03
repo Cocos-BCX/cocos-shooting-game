@@ -175,7 +175,7 @@ let BCXAdpater = cc.Class({
                
             }else{
                 if (callback) {
-                    callback("登录失败");
+                    callback(cc.gameSpace.text.login_fail);
                 }
             }
         }else{
@@ -183,7 +183,12 @@ let BCXAdpater = cc.Class({
             Cocosjs.plugins(new CocosBCX())
             //connect pc-plugin between sdk
             Cocosjs.cocos.connect('My-App').then(connected => {
-                if (!connected) return false
+                console.log("connected=="+connected)
+                if (!connected) {
+                    cc.gameSpace.showTips(cc.gameSpace.text.no_cocos_pay);
+                    return false
+                }
+
                 const cocos = Cocosjs.cocos
                 self.bcl = cocos.cocosBcx(self.bcl);
                 self.bcl.getAccountInfo().then(res => {
@@ -195,9 +200,11 @@ let BCXAdpater = cc.Class({
                     }
                 }).catch(function(e){
                     if (callback) {
-                        callback("登录失败");
+                        callback(cc.gameSpace.text.login_fail);
                     }
                 });
+            }).catch(function(e){
+                console.log("connect error---"+JSON.stringify(e))
             })
         }
     },

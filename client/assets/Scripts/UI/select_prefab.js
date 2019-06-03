@@ -135,12 +135,9 @@ cc.Class({
             time_max:'挂单时间最多只能72小时',
             password_confirm_error:'密码与确认密码不同',
             strengthen_success:'强化成功',
-            success_list:'挂单成功'
-
-
-
-
-
+            success_list:'挂单成功',
+            login_fail:'登陆失败',
+            no_cocos_pay:'您没有安装cocospay 请下载',
         }
         this.text_en={
             lottery_nocoin : 'Insufficient tokens',
@@ -179,6 +176,8 @@ cc.Class({
             password_confirm_error:'Password is different from confirmation password',
             strengthen_success:'Successfull strengthen',
             success_list:'Successful listing',
+            login_fail:'login fail',
+            no_cocos_pay:'You have not installed cocospay please download',
 
 
 
