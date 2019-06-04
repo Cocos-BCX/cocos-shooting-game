@@ -31,7 +31,7 @@ var _configParams = {
     }],
     networks: [{
         core_asset: "COCOS",
-        chain_id: 'b9e7cee4709ddaf08e3b7cba63b71c211c845e37c9bf2b865a7b2a592c8adb28'
+        chain_id: '7d89b84f22af0b150780a2b121aa6c715b19261c8b7fe0fda3a564574ed7d3e9'
     }],
     faucetUrl: 'http://47.93.62.96:8041',
     auto_reconnect: true,
@@ -60,7 +60,7 @@ let BCXAdpater = cc.Class({
         this.upgradeContract = "contract.ccshooter.upgrade";  //升级的合约
         
         if (window.BcxWeb) {
-            self.bcl =  window.BcxWeb;
+            this.bcl =  window.BcxWeb;
             console.log("===bcl---")
             if (callback) {
                 callback(null);
@@ -172,6 +172,7 @@ let BCXAdpater = cc.Class({
     login(callback){
         if(this.bcl){
             try{
+                console.log("login===adada=")
                 this.bcl.getAccountInfo().then(res => {
                     console.log("res.account_name=="+res.account_name)
                     this.bcl.account_name = res.account_name
@@ -210,6 +211,7 @@ let BCXAdpater = cc.Class({
            
             if(check_count>=3){
                 
+                clearInterval(sdk_intervral);
                 if(callback){
                     callback(false)
                 }

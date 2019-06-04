@@ -30,7 +30,7 @@ bclService.init = function () {
         ],
         networks:[{
             core_asset:"COCOS",
-            chain_id:"b9e7cee4709ddaf08e3b7cba63b71c211c845e37c9bf2b865a7b2a592c8adb28" 
+            chain_id:"7d89b84f22af0b150780a2b121aa6c715b19261c8b7fe0fda3a564574ed7d3e9" 
         }], 
         faucet_url:"http://47.93.62.96:8041",
         auto_reconnect:true,
