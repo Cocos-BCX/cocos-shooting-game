@@ -97,33 +97,46 @@ cc.Class({
 
         console.log("login====")
         let login_func = function(){
-            bcxAdapter.login(function (err) {
-                if (err) {
-                    cc.gameSpace.showTips(err);
-                    cc.gameSpace.hideLoading();
-                } else {
-                    // configuration.setGlobalData(constants.DATA_KEY.ACCOUNT, account);
-                    // configuration.setGlobalData(constants.DATA_KEY.PASSWORD, password); //TODO 正式的时候需要去除这个
-
-                    cc.gameSpace.showLoading(cc.gameSpace.text.loading_main+'...');
-
-                    //加载玩家数据
-                    _this.loadPlayerInfo();
-                }
-            });
+            
         }
         var _this = this;
         if (cc.gameSpace.SDK === 'eos') {
             const eosAdapter = require('eosAdapter');
             eosAdapter.initSDK(()=>{
                 cc.gameSpace.isInitFinished = true;
-                login_func()
+                eosAdapter.login(function (err) {
+                    if (err) {
+                        cc.gameSpace.showTips(err);
+                        cc.gameSpace.hideLoading();
+                    } else {
+                        // configuration.setGlobalData(constants.DATA_KEY.ACCOUNT, account);
+                        // configuration.setGlobalData(constants.DATA_KEY.PASSWORD, password); //TODO 正式的时候需要去除这个
+    
+                        cc.gameSpace.showLoading(cc.gameSpace.text.loading_main+'...');
+    
+                        //加载玩家数据
+                        _this.loadPlayerInfo();
+                    }
+                });
             });
         } else {
             bcxAdapter.initSDK(()=>{
                 //SDK初始华完毕
                 cc.gameSpace.isInitFinished = true;
-                login_func()
+                bcxAdapter.login(function (err) {
+                    if (err) {
+                        cc.gameSpace.showTips(err);
+                        cc.gameSpace.hideLoading();
+                    } else {
+                        // configuration.setGlobalData(constants.DATA_KEY.ACCOUNT, account);
+                        // configuration.setGlobalData(constants.DATA_KEY.PASSWORD, password); //TODO 正式的时候需要去除这个
+    
+                        cc.gameSpace.showLoading(cc.gameSpace.text.loading_main+'...');
+    
+                        //加载玩家数据
+                        _this.loadPlayerInfo();
+                    }
+                });
                 
             });
         }

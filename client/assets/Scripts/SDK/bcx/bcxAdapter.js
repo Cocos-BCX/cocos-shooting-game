@@ -19,9 +19,26 @@ console.log('>>>>>>>>cc.game.config.debugMode='+cc.game.config.debugMode);
 console.log('>>>>>>>>SERVER_URL='+SERVER_URL);
 
 // import BCX from 'bcx.min.js' 
-// require('./core.min')
+require('./core.min')
 
-// require('./plugins.min')
+require('./plugins.min')
+
+//cocos配置
+var _configParams = {
+    ws_node_list: [{
+        url: "ws://39.106.126.54:8049",
+        name: "COCOS3.0节点2"
+    }],
+    networks: [{
+        core_asset: "COCOS",
+        chain_id: 'b9e7cee4709ddaf08e3b7cba63b71c211c845e37c9bf2b865a7b2a592c8adb28'
+    }],
+    faucetUrl: 'http://47.93.62.96:8041',
+    auto_reconnect: true,
+    worker: false,
+    real_sub: true,
+    check_cached_nodes_data: true,
+};
 
 
 let BCXAdpater = cc.Class({
@@ -32,27 +49,6 @@ let BCXAdpater = cc.Class({
 
     start () {
         //console.info("window=1=",window.BcxWeb);
-        
-        // if (window.BcxWeb) {
-        //     this.bcl =  window.BcxWeb;
-        // }else{
-        //     var _configParams = {
-        //         ws_node_list: [{
-        //             url: "ws://39.106.126.54:8049",
-        //             name: "COCOS3.0节点2"
-        //         }],
-        //         networks: [{
-        //             core_asset: "COCOS",
-        //             chain_id: 'b9e7cee4709ddaf08e3b7cba63b71c211c845e37c9bf2b865a7b2a592c8adb28'
-        //         }],
-        //         faucetUrl: 'http://47.93.62.96:8041',
-        //         auto_reconnect: true,
-        //         worker: false,
-        //         real_sub: true,
-        //         check_cached_nodes_data: true,
-        //     };
-        //     this.bcl = new BCX(_configParams);
-        // }
     },
 
     initSDK (callback) {
@@ -63,63 +59,46 @@ let BCXAdpater = cc.Class({
         this.contractName = "contract.ccshooter.lottery";         //合约名称
         this.upgradeContract = "contract.ccshooter.upgrade";  //升级的合约
         
-        let self = this
-        //目前进来的时候可能还没有吧bcx挂在window 需要个定时器
-        let total = 0
-        let sdk_intervral = setInterval(function(){
+        if (window.BcxWeb) {
+            self.bcl =  window.BcxWeb;
+            console.log("===bcl---")
+            if (callback) {
+                callback();
+            }
+        }else{
             
-            if (window.BcxWeb) {
-                self.bcl =  window.BcxWeb;
-                console.log("===bcl---")
-                clearInterval(sdk_intervral);
+            self.bcl = new BCX(_configParams);
+
+            let self = this 
+            Cocosjs.plugins(new CocosBCX())
+            //connect pc-plugin between sdk
+            Cocosjs.cocos.connect('My-App').then(connected => {
+                console.log("connected=="+connected)
+                if (!connected) {
+                    //检测一下注入
+                    self.checkWindowBcx(function(is_success){
+                        if(is_success){
+                            if (callback) {
+                                callback();
+                            }
+                        }else{
+                            //此时基本可以认定没有cocospay 给用户提示
+                            cc.gameSpace.showTips(cc.gameSpace.text.no_cocos_pay);
+                        }
+                    })
+                    return false
+                }
+                const cocos = Cocosjs.cocos
+                self.bcl = cocos.cocosBcx(self.bcl);
+
                 if (callback) {
                     callback();
                 }
-            }else{
-                var _configParams = {
-                ws_node_list: [{
-                    url: "ws://39.106.126.54:8049",
-                    name: "COCOS3.0节点2"
-                }],
-                networks: [{
-                    core_asset: "COCOS",
-                    chain_id: 'b9e7cee4709ddaf08e3b7cba63b71c211c845e37c9bf2b865a7b2a592c8adb28'
-                }],
-                faucetUrl: 'http://47.93.62.96:8041',
-                auto_reconnect: true,
-                worker: false,
-                real_sub: true,
-                check_cached_nodes_data: true,
-                };
-                self.bcl = new BCX(_configParams);
+            }).catch(function(e){
+                console.log("connect error---"+JSON.stringify(e))
+            })
 
-                clearInterval(sdk_intervral);
-                if (callback) {
-                    callback();
-                }
-            }
-
-            if(total>=3){
-                total = 0
-                clearInterval(sdk_intervral);
-            }
-            total = total + 1
-        }, 1000);
-       
-        // this.bcl.init({
-        //     autoReconnect:true,
-        //     callback:function(){
-        //         cc.log("init finished!");
-
-        //         if (callback) {
-        //             callback();
-        //         }
-        //     },
-        //     //监听RPC连接状态改变
-        //     subscribeToRpcConnectionStatusCallback:function(status){
-        //         console.info("status",status);
-        //     }
-        // });
+        }
     },
 
     isLogin: function () {
@@ -187,64 +166,39 @@ let BCXAdpater = cc.Class({
     },
 
     login:function(callback){
-        //非客户端钱包 浏览器插件 android等 会直接挂到window上的
-        console.info("window.BcxWeb==",window.BcxWeb);
-        if (window.BcxWeb){
-            let self = this
-            if(this.bcl){
-                console.info("account_name==",this.bcl.account_name);
-                //获取用户信息 因为本游戏需要用到userid 所以多了次步骤
-                try{
-                    this.bcl.getAccountInfo().then(function(res){
-                        self.bcl.account_name = res.account_name
-                        playerData.account =res.account_name
-                        //playerData.saveAccount(res.account_name)
-                        callback(null);
-                        console.log("account_info---"+JSON.stringify(res))
-                    })
-                }catch(e){
-                    //兼容老版本 老版本getAccountInfo().then 非pc版本会报错
-                    if(self.bcl.account_name){
-                        playerData.account =res.account_name
-                        callback(null);
-                    }
-                    
+        if(self.bc){
+            self.bcl.getAccountInfo().then(res => {
+                console.log("res.account_name=="+res.account_name)
+                self.bcl.account_name = res.account_name
+                playerData.account =res.account_name
+                if (callback) {
+                    callback(null);
                 }
-               
-            }else{
+            }).catch(function(e){
                 if (callback) {
                     callback(cc.gameSpace.text.login_fail);
                 }
-            }
-        }else{
-            let self = this
-            Cocosjs.plugins(new CocosBCX())
-            //connect pc-plugin between sdk
-            Cocosjs.cocos.connect('My-App').then(connected => {
-                console.log("connected=="+connected)
-                if (!connected) {
-                    cc.gameSpace.showTips(cc.gameSpace.text.no_cocos_pay);
-                    return false
+            });
+        }
+    },
+
+    checkWindowBcx(callback){
+        //目前进来的时候可能还没有吧bcx挂在window 需要个定时器
+        let sdk_intervral = setInterval(function(){
+            if (window.BcxWeb){
+                this.bcl = window.BcxWeb
+                if(callback){
+                    callback(true)
                 }
 
-                const cocos = Cocosjs.cocos
-                self.bcl = cocos.cocosBcx(self.bcl);
-                self.bcl.getAccountInfo().then(res => {
-                    console.log("res.account_name=="+res.account_name)
-                    self.bcl.account_name = res.account_name
-                    playerData.account =res.account_name
-                    if (callback) {
-                        callback(null);
-                    }
-                }).catch(function(e){
-                    if (callback) {
-                        callback(cc.gameSpace.text.login_fail);
-                    }
-                });
-            }).catch(function(e){
-                console.log("connect error---"+JSON.stringify(e))
-            })
-        }
+            }else{
+                if(callback){
+                    callback(false)
+                }
+            }
+            clearInterval(sdk_intervral);
+
+        }, 1000);
     },
 
     //注册
