@@ -61,10 +61,10 @@ cc.Class({
         // }
 
         // console.log("==cc==",cc)
-        // var prefab = cc.instantiate(this.select_prefab);
-        // this.select_node.addChild(prefab);
+        var prefab = cc.instantiate(this.select_prefab);
+        this.select_node.addChild(prefab);
       
-        //this.login()
+        this.login()
     },
    
     onBtnLoginClick: function () {
@@ -96,9 +96,7 @@ cc.Class({
         cc.gameSpace.showLoading(cc.gameSpace.text.logining);
 
         console.log("login====")
-        let login_func = function(){
-            
-        }
+    
         var _this = this;
         if (cc.gameSpace.SDK === 'eos') {
             const eosAdapter = require('eosAdapter');
@@ -123,11 +121,15 @@ cc.Class({
             bcxAdapter.initSDK(()=>{
                 //SDK初始华完毕
                 cc.gameSpace.isInitFinished = true;
+                console.log("bcxAdapter.initSDK====")
+
                 bcxAdapter.login(function (err) {
+                    console.log("bcxAdapter.initSDK=1==",err)
                     if (err) {
                         cc.gameSpace.showTips(err);
                         cc.gameSpace.hideLoading();
                     } else {
+                        console.log("bcxAdapter.initSDK222")
                         // configuration.setGlobalData(constants.DATA_KEY.ACCOUNT, account);
                         // configuration.setGlobalData(constants.DATA_KEY.PASSWORD, password); //TODO 正式的时候需要去除这个
     

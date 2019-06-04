@@ -63,13 +63,13 @@ let BCXAdpater = cc.Class({
             self.bcl =  window.BcxWeb;
             console.log("===bcl---")
             if (callback) {
-                callback();
+                callback(null);
             }
         }else{
             
+            console.log("===bcl--cocos-")
+            let self = this
             self.bcl = new BCX(_configParams);
-
-            let self = this 
             Cocosjs.plugins(new CocosBCX())
             //connect pc-plugin between sdk
             Cocosjs.cocos.connect('My-App').then(connected => {
@@ -77,9 +77,11 @@ let BCXAdpater = cc.Class({
                 if (!connected) {
                     //检测一下注入
                     self.checkWindowBcx(function(is_success){
+                        console.log("is_success==",is_success)
                         if(is_success){
                             if (callback) {
-                                callback();
+                                console.log("is_success==222")
+                                callback(null)
                             }
                         }else{
                             //此时基本可以认定没有cocospay 给用户提示
@@ -88,11 +90,13 @@ let BCXAdpater = cc.Class({
                     })
                     return false
                 }
+
+                //此时走的是coocspay客户端
                 const cocos = Cocosjs.cocos
                 self.bcl = cocos.cocosBcx(self.bcl);
 
                 if (callback) {
-                    callback();
+                    callback(null);
                 }
             }).catch(function(e){
                 console.log("connect error---"+JSON.stringify(e))
@@ -165,38 +169,53 @@ let BCXAdpater = cc.Class({
         // }});
     },
 
-    login:function(callback){
-        if(this.bc){
-            this.bcl.getAccountInfo().then(res => {
-                console.log("res.account_name=="+res.account_name)
-                this.bcl.account_name = res.account_name
-                playerData.account =res.account_name
-                if (callback) {
-                    callback(null);
+    login(callback){
+        if(this.bcl){
+            try{
+                this.bcl.getAccountInfo().then(res => {
+                    console.log("res.account_name=="+res.account_name)
+                    this.bcl.account_name = res.account_name
+                    playerData.account =res.account_name
+                    if (callback) {
+                        callback(null);
+                    }
+                })
+            }catch(e){
+                console.log("login==e===="+e)
+                console.log("his.bcl.account_name==="+this.bcl.account_name)
+                if(this.bcl.account_name){
+                    playerData.account = this.bcl.account_name
+                    if (callback) {
+                        callback(null);
+                    }
                 }
-            }).catch(function(e){
-                if (callback) {
-                    callback(cc.gameSpace.text.login_fail);
-                }
-            });
+            }
+            
         }
     },
 
     checkWindowBcx(callback){
         //目前进来的时候可能还没有吧bcx挂在window 需要个定时器
+        let check_count = 0
+        let self = this
         let sdk_intervral = setInterval(function(){
+            console.log("checkWindowBcx",window.BcxWeb)
             if (window.BcxWeb){
-                this.bcl = window.BcxWeb
+                self.bcl = window.BcxWeb
                 if(callback){
                     callback(true)
                 }
-
-            }else{
+                clearInterval(sdk_intervral);
+            }
+           
+            if(check_count>=3){
+                
                 if(callback){
                     callback(false)
                 }
             }
-            clearInterval(sdk_intervral);
+            check_count = check_count + 1
+
 
         }, 1000);
     },
