@@ -166,10 +166,10 @@ let BCXAdpater = cc.Class({
     },
 
     login:function(callback){
-        if(self.bc){
-            self.bcl.getAccountInfo().then(res => {
+        if(this.bc){
+            this.bcl.getAccountInfo().then(res => {
                 console.log("res.account_name=="+res.account_name)
-                self.bcl.account_name = res.account_name
+                this.bcl.account_name = res.account_name
                 playerData.account =res.account_name
                 if (callback) {
                     callback(null);
