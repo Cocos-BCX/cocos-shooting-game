@@ -1,0 +1,1 @@
+cp ./index.html ./web-mobile/
