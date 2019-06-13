@@ -124,7 +124,8 @@ function draw( user_name, amount )
   -- result['draw'] = 'money'
   -- result['amount'] = 80
   -- result['pos'] = 1
- 
+  
+  local reward_id = nil
   -- 发放奖金
   if ( result['draw'] == 'money' ) then
     --发放代币
@@ -136,27 +137,36 @@ function draw( user_name, amount )
     local current_bomb = 0;
     while (current_bomb < result['amount']) do
       current_bomb = current_bomb + 1
-      local bomb_id = table.remove(public_data.bomb)
-      chainhelper:transfer_nht_from_owner( user_name, bomb_id, true)
+      reward_id = table.remove(public_data.bomb)
     end
 	  write_list=read_list
   elseif (result['draw'] == 'weapon') then
     --发放武器
     read_list={public_data={ weapon= true}}
 	  chainhelper:read_chain()
-    local weapon_id = table.remove(public_data.weapon)
-    chainhelper:transfer_nht_from_owner( user_name, weapon_id, true)
+    reward_id = table.remove(public_data.weapon)
     write_list=read_list
     
   elseif (result['draw'] == 'employee') then
     --发放员工
     read_list={public_data={ employee= true}}
 	  chainhelper:read_chain()
-    local employee_id = table.remove(public_data.employee)
-    chainhelper:transfer_nht_from_owner( user_name, employee_id, true)
+    reward_id = table.remove(public_data.employee)
     write_list=read_list
     
   end
+
+  if(result['draw'] ~= 'money'){
+    if (reward_id) then
+      chainhelper:transfer_nht_from_owner( user_name, reward_id, true)
+    else
+      --奖池空时的容错 --统一当没抽到奖励处理
+      result['draw'] = 'no'
+      result['amount'] = 0
+      result['pos'] = 0
+    end
+  }
+  
   chainhelper:write_chain()
   chainhelper:log('##result##:{"status": 1, "msg": "draw finished!", "draw": "'..result['draw']..'","amount":"'..result['amount']..'","pos":"'..result['pos']..'"}');
 end
