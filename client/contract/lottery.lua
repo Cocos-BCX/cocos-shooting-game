@@ -143,20 +143,20 @@ function draw( user_name, amount )
   elseif (result['draw'] == 'weapon') then
     --发放武器
     read_list={public_data={ weapon= true}}
-	  chainhelper:read_chain()
+    chainhelper:read_chain()
     reward_id = table.remove(public_data.weapon)
     write_list=read_list
     
   elseif (result['draw'] == 'employee') then
     --发放员工
     read_list={public_data={ employee= true}}
-	  chainhelper:read_chain()
+    chainhelper:read_chain()
     reward_id = table.remove(public_data.employee)
     write_list=read_list
     
   end
 
-  if(result['draw'] ~= 'money'){
+  if(result['draw'] ~= 'money') then
     if (reward_id) then
       chainhelper:transfer_nht_from_owner( user_name, reward_id, true)
     else
@@ -165,9 +165,12 @@ function draw( user_name, amount )
       result['amount'] = 0
       result['pos'] = 0
     end
-  }
+  end
   
-  chainhelper:write_chain()
+  if(reward_id ~= nil) then
+    chainhelper:write_chain()
+  end
+
   chainhelper:log('##result##:{"status": 1, "msg": "draw finished!", "draw": "'..result['draw']..'","amount":"'..result['amount']..'","pos":"'..result['pos']..'"}');
 end
 
