@@ -1,4 +1,4 @@
-[中文](https://github.com/Cocos-BCX/cocos-shooting-game/blob/master/README_cn.md "中文")
+[English](https://github.com/Cocos-BCX/cocos-shooting-game/blob/master/README.md "English")
 
 # cocos-shooting-game
 game
