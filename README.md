@@ -1,7 +1,6 @@
 [中文](https://github.com/Cocos-BCX/cocos-shooting-game/blob/master/README_cn.md "中文")
 
 # cocos-shooting-game  
-game  
 
 Client  
 cocosCreator v 2.1.0  
