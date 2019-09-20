@@ -19,10 +19,13 @@ console.log('>>>>>>>>cc.game.config.debugMode='+cc.game.config.debugMode);
 console.log('>>>>>>>>SERVER_URL='+SERVER_URL);
 
 // import BCX from 'bcx.min.js' 
-require('./core.min')
+// require('./core.min')
 
-require('./plugins.min')
+// require('./plugins.min')
 
+
+require ("https://jdi.cocosbcx.net/static/js/core.min.js")
+require ("https://jdi.cocosbcx.net/static/js/plugin.min.js")
 //cocos配置
 var _configParams = {
     ws_node_list: [{
