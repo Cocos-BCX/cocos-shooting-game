@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var bclLibs = require('https://jdi.cocosbcx.net/static/js/bcx.min.js');
+var bclLibs = require('./../libs/bcx.min');
 var async = require('async');
 
 var BclLogic = function () {
