@@ -16,23 +16,7 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
-
-        edtPrivateKey: cc.EditBox
+       
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -40,26 +24,27 @@ cc.Class({
     // onLoad () {},
 
     onLoad: function() {
-        cc.gameSpace.showLoading(cc.gameSpace.text.getting_key);
+        // cc.gameSpace.showLoading(cc.gameSpace.text.getting_key);
 
-        var _this = this;
-        bcxAdapter.getPrivateKey(function (err, res) {
-            if (err) {
-                cc.gameSpace.showTips(err);
-            } else {
-                //获取成功，设置值
-                _this.privateKey = res.data.active_private_key;
-                _this.edtPrivateKey.string = _this.privateKey;
-            }
+        // var _this = this;
+        // bcxAdapter.getPrivateKey(function (err, res) {
+        //     if (err) {
+        //         cc.gameSpace.showTips(err);
+        //     } else {
+        //         //获取成功，设置值
+        //         _this.privateKey = res.data.active_private_key;
+        //         _this.edtPrivateKey.string = _this.privateKey;
+        //     }
 
-            cc.gameSpace.hideLoading();
-        });
+        //     cc.gameSpace.hideLoading();
+        // });
         this.setCurLanguage();
     },
 
     show () {
-        cc.gameSpace.hideLoading();
+        //cc.gameSpace.hideLoading();
     },
+
     setCurLanguage:function(){
         var type = cc.sys.localStorage.getItem('language');
         if(type == 1){
@@ -72,11 +57,11 @@ cc.Class({
 
     },
 
-    onPrivateKeyChanged: function (text) {
-        if (text !== this.privateKey) {
-            this.edtPrivateKey.string = this.privateKey;
-        }
-    },
+    // onPrivateKeyChanged: function (text) {
+    //     if (text !== this.privateKey) {
+    //         this.edtPrivateKey.string = this.privateKey;
+    //     }
+    // },
 
     onBtnConfirmClick: function () {
         this.node.destroy();

@@ -56,6 +56,10 @@ cc.Class({
 
     refreshMoney: function () {
         var _this = this;
+        cc.log("playerData.gold==",playerData.gold)
+        if(playerData.gold){
+            _this.txtCocos.string = playerData.gold
+        }
         bcxAdapter.getBalance(function (err, result) {
             if (err) {
                 cc.gameSpace.showTips(err);
@@ -165,6 +169,7 @@ cc.Class({
     onBtnQuestionClick: function () {
         // this.testBclFunction();
         cc.gameSpace.audioManager.playSound("click", false);
+        cc.gameSpace.uiManager.showSharedDialog('desTip', 'showKey', []);
     },
 
     onBtnPilotClick: function () {
@@ -185,7 +190,7 @@ cc.Class({
         // cc.gameSpace.showLoading(cc.gameSpace.text.loading);
         // cc.gameSpace.uiManager.showSharedDialog('showKey', 'showKey', []);
 
-        bcxAdapter.test();
+        
     },
 
     onBtnSoundClick: function () {

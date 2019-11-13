@@ -9,30 +9,13 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
 
 var gridView = require('gridView');
-var bcxAdapter = require('bcxAdapter');
-var playerData = require('playerData');
 const i18n = require('LanguageData');
+var bcxAdapter = require('bcxAdapter');
 
 cc.Class({
     extends: cc.Component,
 
     properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
-
         inviteGridView: {
             default: null,
             type: gridView
@@ -40,6 +23,12 @@ cc.Class({
     },
 
     // LIFE-CYCLE CALLBACKS:
+
+    // onLoad () {},
+
+    start () {
+
+    },
 
     onLoad () {
         this.setCurLanguage();
@@ -66,7 +55,7 @@ cc.Class({
         var node = event.node;
         var content = event.content;
         console.log(">>>>>>>>>>>content>>>"+JSON.stringify(content))
-        node.getComponent('marketItem').show(this, index, content);
+        node.getComponent('orderItem').show(this, index, content);
     },
 
     refreshList: function() {
@@ -110,10 +99,10 @@ cc.Class({
         // });
 
         let self = this
-        bcxAdapter.getItems(function (err, res) {
-            self.afterGetData();
-        });
 
+        bcxAdapter.queryAccountGameItemOrders(function (err, res) {
+            self.afterGetData(res);
+        })
     },
 
     setCurLanguage:function(){
@@ -129,36 +118,15 @@ cc.Class({
     },
 
 
-    afterGetData: function () {
+    afterGetData: function (res) {
+        //res.data
         var arrItems = [];
-        for (var idx = 0; idx < playerData.goods.length; idx++) {
-            var item = playerData.goods[idx];
+        for (var idx = 0; idx < res.data.length; idx++) {
+            var item = res.data[idx];
             item.info = JSON.parse(item.base_describe);
 
             arrItems.push(item);
         }
-
-        for (var idxSell = 0; idxSell < this.arrSelling.length; idxSell++) {
-            var itemSell = this.arrSelling[idxSell];
-            itemSell.info = JSON.parse(itemSell.base_describe);
-            arrItems.push(itemSell);
-        }
-
-        arrItems.sort(function (a, b) {
-            if (a.info.type > b.info.type) {
-                return 1;
-            } else if (a.info.type === b.info.type) {
-                if (a.order && !b.order) {
-                    return -1;
-                } else if (!a.order && b.order) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-
-            return -1;
-        });
 
         this.inviteGridView.init(arrItems);
     },
@@ -168,13 +136,4 @@ cc.Class({
 
         this.node.destroy();
     },
-    
-    onBtnMarketClick: function () {
-        cc.gameSpace.audioManager.playSound("click", false);
-
-        //window.open("http://gpe.famegame.com.cn");
-        cc.gameSpace.uiManager.showSharedDialog('orderList', 'orderList', []);
-    }
-
-    // update (dt) {},
 });

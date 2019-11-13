@@ -10,7 +10,7 @@
 
 var bcxAdapter = require('bcxAdapter');
 var resourceUtil = require('resourceUtil');
-
+var playerData = require('playerData');
 cc.Class({
     extends: cc.Component,
 
@@ -89,6 +89,10 @@ cc.Class({
 
     refreshGold: function () {
         var _this = this;
+        if(playerData.gold){
+            _this.lbGold.string = playerData.gold
+        }
+
         bcxAdapter.getBalance(function (err, result) {
             if (err) {
                 cc.gameSpace.showTips(err);
@@ -137,6 +141,7 @@ cc.Class({
             this.dictReward[keyName].getComponent("LotteryItem").setSelect(false);
         }
 
+        this.btnStart.interactable  = false
         //开始抽奖
         cc.gameSpace.showLoading(cc.gameSpace.text.executing+' ' + bcxAdapter.contractName +' '+cc.gameSpace.text.contract+'...');
         var _this = this;
@@ -185,6 +190,7 @@ cc.Class({
         var rotationAction = cc.rotateTo(offset/360 + randTimes * 0.5, -(targetRotation + randTimes * 360 + 360 -this.randValue * 36)).easing(cc.easeCircleActionOut());
         var seqAction = cc.sequence(rotationAction, cc.callFunc(function(){
             this.showReward();
+            this.btnStart.interactable  = true
         }, this));
 
         this.nodeTurnable.runAction(seqAction);

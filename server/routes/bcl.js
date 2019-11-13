@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var bclLibs = require('./../libs/bcx.min');
+var bclLibs = require('./../libs/bcx.node');
 var async = require('async');
 
 var BclLogic = function () {
@@ -22,28 +22,28 @@ var MIN_LOTTERY_BOMB = 10;  //抽奖炸弹数量最少是10个
 var bclService = BclLogic.prototype;
 
 bclService.init = function () {
-    var _configParams={
-        default_ws_node:"ws://47.93.62.96:8049",
-        ws_node_list:[
-            {url:"ws://39.106.126.54:8049",name:"COCOS3.0节点2"},
-            {url:"ws://47.93.62.96:8049",name:"COCOS3.0节点1"}
-        ],
-        networks:[{
-            core_asset:"COCOS",
-            chain_id:"7d89b84f22af0b150780a2b121aa6c715b19261c8b7fe0fda3a564574ed7d3e9" 
-        }], 
-        faucet_url:"http://47.93.62.96:8041",
-        auto_reconnect:true,
-        check_cached_nodes_data:false                     
-    }
-
     this.arrLotteryBomb = [];
     this.arrLotteryWeapon = [];
     this.arrEmploy = [];
 
     var _this = this;
     this.count = 0;
-    this.bcl = new BCX(_configParams);
+    this.bcl = bclLibs.createBCX({
+         ws_node_list:[
+            {url:"ws://test.cocosbcx.net",name:"Cocos - China - Beijing"},   
+         ],
+         networks:[
+            {
+                core_asset:"COCOS",
+                chain_id:"c1ac4bb7bd7d94874a1cb98b39a8a582421d03d022dfa4be8c70567076e03ad0" 
+            }
+         ], 
+        faucet_url:"http://test-faucet.cocosbcx.net",
+        auto_reconnect:true,
+        real_sub:true,
+        check_cached_nodes_data:false       
+    });
+    
     this.bcl.init({
         callback: function (res) {
         console.log('init finish:', res);

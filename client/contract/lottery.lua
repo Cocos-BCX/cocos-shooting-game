@@ -132,14 +132,14 @@ function draw( user_name, amount )
     chainhelper:transfer_from_owner( user_name, result['amount'] * public_data.accuracy, 'COCOS', true)
   elseif (result['draw'] == 'bomb') then
     --发放炸弹
-	  read_list={public_data={ bomb= true}}
+    read_list={public_data={ bomb= true}}
     chainhelper:read_chain()
     local current_bomb = 0;
     while (current_bomb < result['amount']) do
       current_bomb = current_bomb + 1
       reward_id = table.remove(public_data.bomb)
     end
-	  write_list=read_list
+    write_list=read_list
   elseif (result['draw'] == 'weapon') then
     --发放武器
     read_list={public_data={ weapon= true}}

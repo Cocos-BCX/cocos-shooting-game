@@ -41,9 +41,9 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.239111328125,
-      "y": 0.239111328125,
-      "z": 0.239111328125
+      "x": 0.20514348406322114,
+      "y": 0.20514348406322114,
+      "z": 0.20514348406322114
     },
     "_quat": {
       "__type__": "cc.Quat",
@@ -107,16 +107,19 @@
       },
       {
         "__id__": 86
+      },
+      {
+        "__id__": 93
       }
     ],
     "_active": true,
     "_level": 1,
     "_components": [
       {
-        "__id__": 94
+        "__id__": 95
       },
       {
-        "__id__": 95
+        "__id__": 96
       }
     ],
     "_prefab": null,
@@ -2960,7 +2963,7 @@
       "__id__": 2
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_level": 0,
     "_components": [
       {
@@ -3688,10 +3691,10 @@
     "_level": 0,
     "_components": [
       {
-        "__id__": 92
+        "__id__": 91
       },
       {
-        "__id__": 93
+        "__id__": 92
       }
     ],
     "_prefab": null,
@@ -3705,7 +3708,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 318.16,
+      "width": 78.02,
       "height": 60
     },
     "_anchorPoint": {
@@ -3777,7 +3780,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -135.08,
+      "x": -15.009999999999998,
       "y": 0,
       "z": 0
     },
@@ -3844,9 +3847,6 @@
     "_components": [
       {
         "__id__": 90
-      },
-      {
-        "__id__": 91
       }
     ],
     "_prefab": null,
@@ -3860,7 +3860,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 260.16,
+      "width": 20.02,
       "height": 40
     },
     "_anchorPoint": {
@@ -3907,8 +3907,8 @@
     "_srcBlendFactor": 1,
     "_dstBlendFactor": 771,
     "_useOriginalSize": false,
-    "_string": "label.Refreshing",
-    "_N$string": "label.Refreshing",
+    "_string": "0",
+    "_N$string": "0",
     "_fontSize": 36,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -3920,17 +3920,6 @@
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
     "_id": "d5jJTStDlLJ6Urr8VieI1f"
-  },
-  {
-    "__type__": "744dcs4DCdNprNhG0xwq6FK",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 89
-    },
-    "_enabled": true,
-    "_dataID": "label.Refreshing",
-    "_id": "0eJh41jARNzowc3hkDSNC3"
   },
   {
     "__type__": "cc.Widget",
@@ -3969,7 +3958,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 318.16,
+      "width": 78.02,
       "height": 60
     },
     "_resize": 1,
@@ -3991,6 +3980,93 @@
     "_N$horizontalDirection": 0,
     "_N$affectedByScale": false,
     "_id": "2fcQF0uVVEOaNP/w0hnIo7"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "New Label",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 2,
+    "_components": [
+      {
+        "__id__": 94
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 135.59,
+      "height": 40
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": -297,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_quat": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_zIndex": 0,
+    "_is3DNode": false,
+    "groupIndex": 0,
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_id": "64gwohU4hHQYR89yBIQEI1"
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 93
+    },
+    "_enabled": true,
+    "_srcBlendFactor": 1,
+    "_dstBlendFactor": 771,
+    "_useOriginalSize": false,
+    "_string": "welcom",
+    "_N$string": "welcom",
+    "_fontSize": 40,
+    "_lineHeight": 40,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 0,
+    "_id": "34YHsCdIVF74nUz5NNZAJ1"
   },
   {
     "__type__": "cc.Canvas",

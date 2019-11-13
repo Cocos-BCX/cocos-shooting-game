@@ -25,20 +25,20 @@ require('./plugins.min')
 
 //cocos配置
 var _configParams = {
-    ws_node_list: [{
-        url: "ws://39.106.126.54:8049",
-        name: "COCOS3.0节点2"
-    }],
-    networks: [{
-        core_asset: "COCOS",
-        chain_id: '7d89b84f22af0b150780a2b121aa6c715b19261c8b7fe0fda3a564574ed7d3e9'
-    }],
-    faucetUrl: 'http://47.93.62.96:8041',
-    auto_reconnect: true,
-    worker: false,
-    real_sub: true,
-    check_cached_nodes_data: true,
-};
+    ws_node_list:[
+        {url:"ws://test.cocosbcx.net",name:"Cocos - China - Beijing"},   
+     ],
+     networks:[
+        {
+            core_asset:"COCOS",
+            chain_id:"c1ac4bb7bd7d94874a1cb98b39a8a582421d03d022dfa4be8c70567076e03ad0" 
+        }
+     ], 
+    faucet_url:"http://test-faucet.cocosbcx.net",
+    auto_reconnect:true,
+    real_sub:true,
+    check_cached_nodes_data:false
+    };
 
 
 let BCXAdpater = cc.Class({
@@ -525,40 +525,38 @@ let BCXAdpater = cc.Class({
     creatGameItemOrder: function(itemId, price, expiration, fee, memo, callback){
         this.bcl.creatNHAssetOrder(
             {
-                otcAccount:"ccshooter",
+                otcAccount:"otcaccount",
                 orderFee:fee,
                 NHAssetId:itemId,
                 price:price,
                 priceAssetId:'COCOS',
                 expiration:expiration,
                 memo:memo,
-                callback:function(res){
-                    console.info('creatNHAssetOrder result',res);
-                    if (callback) {
-                        if (res.code === 1) {
-                            callback(null, res);
-                        } else {
-                            callback(res.message, res);
-                        }
-                    }
+            }
+        ).then(function(res){
+            console.info('creatNHAssetOrder result',res);
+            if (callback) {
+                if (res.code === 1) {
+                    callback(null, res);
+                } else {
+                    callback(res.message, res);
                 }
             }
-        )
+        })
     },
 
     cancelGameItemOrder:function(orderId, callback){
         this.bcl.cancelNHAssetOrder({
             orderId:orderId,
-            callback:function(res){
-                console.info("cancelNHAssetOrder res",res);
+        }).then(function(res){
+            console.info("cancelNHAssetOrder res",res);
 
-                if (callback) {
-                    if (res.code === 1) {
-                        callback(null, res);
-                    } else {
-                        callback(res.message, res);
-                    }   
-                }
+            if (callback) {
+                if (res.code === 1) {
+                    callback(null, res);
+                } else {
+                    callback(res.message, res);
+                }   
             }
         });
     },
@@ -572,7 +570,7 @@ let BCXAdpater = cc.Class({
             pageSize:100,
             page:1,
         }).then(function(res){
-            console.info('res',res);
+            console.info('res goodsSelling==',res);
             if (res.code === 1) {
                 playerData.goodsSelling = res.data;
 
@@ -593,8 +591,9 @@ let BCXAdpater = cc.Class({
      * @param callback
      */
     queryGameItemInfo: function (arrItemId, callback) {
+        console.info("arrItemId==-",arrItemId);
         this.bcl.queryNHAssets({
-            NHAssetHashOrIds: arrItemId,
+            NHAssetIds: arrItemId,
         }).then(function(res){
             if(res.code === 1){
                 callback(null, res);

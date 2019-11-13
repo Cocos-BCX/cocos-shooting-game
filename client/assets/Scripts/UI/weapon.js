@@ -138,6 +138,10 @@ cc.Class({
 
     refreshMoney: function () {
         var _this = this;
+        if(playerData.gold){
+            _this.txtCocos.string = playerData.gold
+        }
+
         bcxAdapter.getBalance(function (err, result) {
             if (!err) {
                 _this.txtCocos.string = result.data.COCOS.toFixed(1);

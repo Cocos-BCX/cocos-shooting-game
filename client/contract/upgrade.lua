@@ -32,3 +32,6 @@ function equipment_upgrade( equipment_id, current_level)
 	write_list={public_data={}}
   	chainhelper:write_chain()
 end
+
+
+  
