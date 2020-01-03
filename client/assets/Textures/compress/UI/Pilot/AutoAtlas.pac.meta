@@ -7,12 +7,15 @@
   "allowRotation": true,
   "forceSquared": false,
   "powerOfTwo": true,
-  "heuristices": "BestAreaFit",
+  "algorithm": "MaxRects",
   "format": "png",
   "quality": 80,
   "contourBleed": false,
   "paddingBleed": true,
   "filterUnused": false,
+  "packable": false,
+  "premultiplyAlpha": false,
+  "filterMode": "bilinear",
   "platformSettings": {},
   "subMetas": {}
 }

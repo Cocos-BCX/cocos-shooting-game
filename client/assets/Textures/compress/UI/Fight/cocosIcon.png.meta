@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "e222f729-1b8e-446e-bc63-28fbb8101964",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "cocosIcon": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "b143fd49-70c0-49e2-a6aa-f51fe838b047",
       "rawTextureUuid": "e222f729-1b8e-446e-bc63-28fbb8101964",
       "trimType": "auto",

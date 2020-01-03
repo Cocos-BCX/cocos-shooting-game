@@ -15,8 +15,8 @@ var SERVER_URL = "http://shooter.cocosbcx.net/plane"; //服务器地址
 if (cc.game.config.debugMode === cc.debug.DebugMode.INFO) {
     SERVER_URL = "http://127.0.0.1:3000";
 }
-console.log('>>>>>>>>cc.game.config.debugMode='+cc.game.config.debugMode);
-console.log('>>>>>>>>SERVER_URL='+SERVER_URL);
+console.log('>>>>>>>>cc.game.config.debugMode=' + cc.game.config.debugMode);
+console.log('>>>>>>>>SERVER_URL=' + SERVER_URL);
 
 // import BCX from 'bcx.min.js' 
 require('./core.min')
@@ -24,21 +24,6 @@ require('./core.min')
 require('./plugins.min')
 
 //cocos配置
-var _configParams = {
-    ws_node_list:[
-        {url:"ws://test.cocosbcx.net",name:"Cocos - China - Beijing"},   
-     ],
-     networks:[
-        {
-            core_asset:"COCOS",
-            chain_id:"c1ac4bb7bd7d94874a1cb98b39a8a582421d03d022dfa4be8c70567076e03ad0" 
-        }
-     ], 
-    faucet_url:"http://test-faucet.cocosbcx.net",
-    auto_reconnect:true,
-    real_sub:true,
-    check_cached_nodes_data:false
-    };
 
 
 let BCXAdpater = cc.Class({
@@ -47,61 +32,53 @@ let BCXAdpater = cc.Class({
 
     // onLoad () {},
 
-    start () {
+    start() {
         //console.info("window=1=",window.BcxWeb);
     },
 
-    initSDK (callback) {
-        this.isLoginBcl = false;
+    initSDK(callback) {
         this.account = null;
         this.userId = null;
         this.privateKey = null;
-        this.contractName = "contract.ccshooter.lottery";         //合约名称
-        this.upgradeContract = "contract.ccshooter.upgrade";  //升级的合约
-        
-        if (window.BcxWeb) {
-            this.bcl =  window.BcxWeb;
-            console.log("===bcl---")
-            if (callback) {
-                callback(null);
-            }
-        }else{
-            
-            console.log("===bcl--cocos-")
+        this.contractName = "contract.ccshooter.lottery"; //合约名称
+        this.upgradeContract = "contract.ccshooter.upgrade"; //升级的合约
+        this.defaultWs = "wss://api.cocosbcx.net"; //升级的合约
+        this.defaultChainId = "6057d856c398875cac2650fe33caef3d5f6b403d184c5154abbff526ec1143c4"; //升级的合约
+        try {
+            let timer = null
+            clearInterval(timer)
             let self = this
-            self.bcl = new BCX(_configParams);
-            Cocosjs.plugins(new CocosBCX())
-            //connect pc-plugin between sdk
-            Cocosjs.cocos.connect('My-App').then(connected => {
-                console.log("connected=="+connected)
-                if (!connected) {
-                    //检测一下注入
-                    self.checkWindowBcx(function(is_success){
-                        console.log("is_success==",is_success)
-                        if(is_success){
-                            if (callback) {
-                                console.log("is_success==222")
-                                callback(null)
+            timer = setInterval(() => {
+                if (window.BcxWeb) {
+                    console.log("init--window.BcxWeb-client-", window.BcxWeb);
+                    self.bcl = window.BcxWeb;
+                    try {
+                    window.BcxWeb.initConnect().then(async res => {
+                        self.sendNodeInfo(res.ws, res.chainId, function (res) {
+                            var obj = JSON.parse(res);
+                            if (obj.state === 1) {
+                                console.log("initConnect succeed!");
+                                clearInterval(timer)
                             }
-                        }else{
-                            //此时基本可以认定没有cocospay 给用户提示
-                            cc.gameSpace.showTips(cc.gameSpace.text.no_cocos_pay);
-                        }
+                        });
+                    }).catch(error => {
+                        console.log("initConnect failed!", error);
                     })
-                    return false
+                } catch (error) {
+                    self.sendNodeInfo(self.defaultWs, self.defaultChainId, function (res) {
+                        var obj = JSON.parse(res);
+                        if (obj.state === 1) {
+                            console.log("sendNodeInfo succeed!");
+                            clearInterval(timer)
+                        } else {
+                            console.log("sendNodeInfo failed!", error);
+                        }
+                    });
                 }
-
-                //此时走的是coocspay客户端
-                const cocos = Cocosjs.cocos
-                self.bcl = cocos.cocosBcx(self.bcl);
-
-                if (callback) {
-                    callback(null);
                 }
-            }).catch(function(e){
-                console.log("connect error---"+JSON.stringify(e))
-            })
-
+            }, 1000)
+        } catch (error) {
+            console.log("initSDK-------error------", error);
         }
     },
 
@@ -110,7 +87,7 @@ let BCXAdpater = cc.Class({
     },
 
     //使用账号密码登录
-    loginWithAccount (account, pwd, callback) {
+    loginWithAccount(account, pwd, callback) {
         // playerData.account = account;
         // let _this = this;
         // this.bcl.passwordLogin({account: account, password:pwd, callback: function (result) {
@@ -134,18 +111,20 @@ let BCXAdpater = cc.Class({
     },
 
     //退出登录
-    logout (callback){
-        this.bcl.logout({callback:function(res){
-            console.info("logout res",res);
+    logout(callback) {
+        this.bcl.logout({
+            callback: function (res) {
+                console.info("logout res", res);
 
-            if (callback) {
-                if (res.code === 1) {
-                    callback(null, res);
-                } else {
-                    callback(res.message, res);
+                if (callback) {
+                    if (res.code === 1) {
+                        callback(null, res);
+                    } else {
+                        callback(res.message, res);
+                    }
                 }
             }
-        }});
+        });
     },
 
     //使用privateKey登录
@@ -169,50 +148,50 @@ let BCXAdpater = cc.Class({
         // }});
     },
 
-    login(callback){
-        if(this.bcl){
-            try{
+    login(callback) {
+        if (this.bcl) {
+            try {
                 console.log("login===adada=")
                 this.bcl.getAccountInfo().then(res => {
-                    console.log("res.account_name=="+res.account_name)
+                    console.log("res.account_name==" + res.account_name)
                     this.bcl.account_name = res.account_name
-                    playerData.account =res.account_name
+                    playerData.account = res.account_name
                     if (callback) {
                         callback(null);
                     }
                 })
-            }catch(e){
-                console.log("login==e===="+e)
-                console.log("his.bcl.account_name==="+this.bcl.account_name)
-                if(this.bcl.account_name){
+            } catch (e) {
+                console.log("login==e====" + e)
+                console.log("his.bcl.account_name===" + this.bcl.account_name)
+                if (this.bcl.account_name) {
                     playerData.account = this.bcl.account_name
                     if (callback) {
                         callback(null);
                     }
                 }
             }
-            
+
         }
     },
 
-    checkWindowBcx(callback){
+    checkWindowBcx(callback) {
         //目前进来的时候可能还没有吧bcx挂在window 需要个定时器
         let check_count = 0
         let self = this
-        let sdk_intervral = setInterval(function(){
-            console.log("checkWindowBcx",window.BcxWeb)
-            if (window.BcxWeb){
+        let sdk_intervral = setInterval(function () {
+            console.log("checkWindowBcx", window.BcxWeb)
+            if (window.BcxWeb) {
                 self.bcl = window.BcxWeb
-                if(callback){
+                if (callback) {
                     callback(true)
                 }
                 clearInterval(sdk_intervral);
             }
-           
-            if(check_count>=3){
-                
+
+            if (check_count >= 3) {
+
                 clearInterval(sdk_intervral);
-                if(callback){
+                if (callback) {
                     callback(false)
                 }
             }
@@ -223,11 +202,11 @@ let BCXAdpater = cc.Class({
     },
 
     //注册
-    signUp (account, pwd, callback) {
+    signUp(account, pwd, callback) {
         this.bcl.createAccountWithPassword({
-            account:account,
-            password:pwd,
-            autoLogin:true,
+            account: account,
+            password: pwd,
+            autoLogin: true,
             callback: function (result) {
                 if (result.code === 1) {
                     playerData.account = result.data.account_name;
@@ -239,7 +218,7 @@ let BCXAdpater = cc.Class({
                     }
                 } else if (callback) {
                     callback(result.message, result);
-                }   
+                }
             }
         });
     },
@@ -247,10 +226,10 @@ let BCXAdpater = cc.Class({
     /**
      * 删除钱包，暂时没用
      */
-    deleteWallet (){
+    deleteWallet() {
         this.bcl.deleteWallet({
-            callback:function(res){
-                console.info("deleteWallet res",res);
+            callback: function (res) {
+                console.info("deleteWallet res", res);
             }
         });
     },
@@ -258,10 +237,10 @@ let BCXAdpater = cc.Class({
     /**
      * 获取钱包模式下的账号
      */
-    getAccounts:function(callback){
+    getAccounts: function (callback) {
         this.bcl.getAccounts({
-            callback:function(res){
-                console.info("getAccounts res",res);
+            callback: function (res) {
+                console.info("getAccounts res", res);
 
                 // _this.deleteWallet();
                 if (callback) {
@@ -279,11 +258,11 @@ let BCXAdpater = cc.Class({
     getPrivateKey: function (callback) {
         this.bcl.getPrivateKey({
             callback: function (res) {
-                
+
                 if (callback) {
                     if (res.code === 1) {
                         playerData.privateKey = res.data.active_private_key;
-                        callback (null, res);
+                        callback(null, res);
                     } else {
                         callback(res.message, res);
                     }
@@ -292,12 +271,12 @@ let BCXAdpater = cc.Class({
         });
     },
 
-     //代币资产查询
-    getBalance (callback) {
-        this.getBalanceByAccount(playerData.account, function(err, res) {
+    //代币资产查询
+    getBalance(callback) {
+        this.getBalanceByAccount(playerData.account, function (err, res) {
             if (!err) {
                 res.data.COCOS = Number(res.data.COCOS)
-                playerData.gold = res.data.COCOS 
+                playerData.gold = res.data.COCOS
                 //console.info('playerData.gold==',playerData.gold);
             }
 
@@ -305,13 +284,13 @@ let BCXAdpater = cc.Class({
         });
     },
 
-    getBalanceByAccount (account, callback) {
+    getBalanceByAccount(account, callback) {
         this.bcl.queryAccountBalances({
-            assetId:'COCOS',
+            assetId: 'COCOS',
             account: account,
-        
-        }).then(function(res){
-            console.info('getBalanceByAccount==',res);
+
+        }).then(function (res) {
+            console.info('getBalanceByAccount==', res);
 
             if (res.code === -25 || res.code === 125) {
                 //表示还没有这种代币，先给与赋值为0
@@ -325,7 +304,7 @@ let BCXAdpater = cc.Class({
                 }
             } else if (callback) {
                 callback(res.message, res);
-            }   
+            }
         });
     },
 
@@ -339,8 +318,8 @@ let BCXAdpater = cc.Class({
             worldViews: ['CCShooter'],
             page: 1,
             pageSize: 1000,
-        }).then(function(res){
-            console.log("res-getItems--"+JSON.stringify(res));
+        }).then(function (res) {
+            console.log("res-getItems--" + JSON.stringify(res));
 
             //更新playerData里头的道具列表
             if (res.code == 1) {
@@ -397,10 +376,10 @@ let BCXAdpater = cc.Class({
             toAccount: 'ccshooter',
             amount: amount,
             assetId: 'COCOS',
-            feeAssetId:'COCOS',
+            feeAssetId: 'COCOS',
             memo: memo,
             onlyGetFee: false,
-        }).then(function(res){
+        }).then(function (res) {
             if (res.code == 1) {
                 callback(null, res);
             } else {
@@ -414,7 +393,7 @@ let BCXAdpater = cc.Class({
      * @param {String} contractName 
      * @param {Function} callback 
      */
-    queryContract (contractName, callback) {
+    queryContract(contractName, callback) {
         this.bcl.queryContract({
             nameOrId: contractName,
             callback: function (res) {
@@ -430,20 +409,31 @@ let BCXAdpater = cc.Class({
     lottery: function (callback) {
         this.bcl.callContractFunction({
             nameOrId: this.contractName,
-            functionName: 'draw',//["1",1000001,'COCOS']
-            valueList:[playerData.account, 100],////
-           
-        }).then(function(res){
-            console.info("draw res=",res);
+            functionName: 'draw', //["1",1000001,'COCOS']
+            valueList: [playerData.account, 100], ////
+
+        }).then(function (res) {
+            console.info("draw res=", res);
 
             if (res.code === 1) {
                 callback(null, res);
             } else {
                 callback(res.message, res);
             }
-        }).catch(function(e){
-            console.info("draw lottery error=",JSON.stringify(e));
+        }).catch(function (e) {
+            console.info("draw lottery error=", JSON.stringify(e));
         });
+    },
+
+    sendNodeInfo: function (node, chainId, callback) {
+        //http://pvp-t.592you.com:4020
+        var nodeUrl = SERVER_URL + "/bcl/node?node=" + node + "&chainId=" + chainId;
+
+        // var transferUrl = "http://cs.592you.com/transfer?";  //username=1.2.42&token=1&memo=asdas&key=5KHuvcBFp9HtqWa6rV3faKjm9reEoGMV8WZNvVnbGekDwA42Hnz&blocking=head
+        // transferUrl += 'username=' + this.userId + '&token='+ token +'&blocking=head&memo='+comment + '&key=5KHuvcBFp9HtqWa6rV3faKjm9reEoGMV8WZNvVnbGekDwA42Hnz';
+        this.requestWithGet(nodeUrl, function (res) {
+            callback(res);
+        }, this);
     },
 
 
@@ -482,7 +472,7 @@ let BCXAdpater = cc.Class({
         //创建炸弹接口改为调用服务端来处理
         var url = SERVER_URL + '/bcl/bomb/' + playerData.account;
         // var url = 'http://pvp-t.592you.com:4020/bcl/bomb/' + this.account;
-        console.log(">>>>>>>>SERVER_URL=="+SERVER_URL);
+        console.log(">>>>>>>>SERVER_URL==" + SERVER_URL);
         this.requestWithGet(url, function (res) {
             if (callback) {
                 let objRes = JSON.parse(res);
@@ -491,7 +481,7 @@ let BCXAdpater = cc.Class({
                 } else {
                     callback(objRes.statusText, objRes);
                 }
-            }   
+            }
         }, this);
     },
 
@@ -522,19 +512,17 @@ let BCXAdpater = cc.Class({
      * @param memo
      * @param callback
      */
-    creatGameItemOrder: function(itemId, price, expiration, fee, memo, callback){
-        this.bcl.creatNHAssetOrder(
-            {
-                otcAccount:"otcaccount",
-                orderFee:fee,
-                NHAssetId:itemId,
-                price:price,
-                priceAssetId:'COCOS',
-                expiration:expiration,
-                memo:memo,
-            }
-        ).then(function(res){
-            console.info('creatNHAssetOrder result',res);
+    creatGameItemOrder: function (itemId, price, expiration, fee, memo, callback) {
+        this.bcl.creatNHAssetOrder({
+            otcAccount: "otcaccount",
+            orderFee: fee,
+            NHAssetId: itemId,
+            price: price,
+            priceAssetId: 'COCOS',
+            expiration: expiration,
+            memo: memo,
+        }).then(function (res) {
+            console.info('creatNHAssetOrder result', res);
             if (callback) {
                 if (res.code === 1) {
                     callback(null, res);
@@ -545,18 +533,18 @@ let BCXAdpater = cc.Class({
         })
     },
 
-    cancelGameItemOrder:function(orderId, callback){
+    cancelGameItemOrder: function (orderId, callback) {
         this.bcl.cancelNHAssetOrder({
-            orderId:orderId,
-        }).then(function(res){
-            console.info("cancelNHAssetOrder res",res);
+            orderId: orderId,
+        }).then(function (res) {
+            console.info("cancelNHAssetOrder res", res);
 
             if (callback) {
                 if (res.code === 1) {
                     callback(null, res);
                 } else {
                     callback(res.message, res);
-                }   
+                }
             }
         });
     },
@@ -564,13 +552,13 @@ let BCXAdpater = cc.Class({
     /**
      * 查询当前账号下所拥有的道具出售单
      */
-    queryAccountGameItemOrders: function(callback){
+    queryAccountGameItemOrders: function (callback) {
         this.bcl.queryAccountNHAssetOrders({
-            account:playerData.account,
-            pageSize:100,
-            page:1,
-        }).then(function(res){
-            console.info('res goodsSelling==',res);
+            account: playerData.account,
+            pageSize: 100,
+            page: 1,
+        }).then(function (res) {
+            console.info('res goodsSelling==', res);
             if (res.code === 1) {
                 playerData.goodsSelling = res.data;
 
@@ -591,11 +579,11 @@ let BCXAdpater = cc.Class({
      * @param callback
      */
     queryGameItemInfo: function (arrItemId, callback) {
-        console.info("arrItemId==-",arrItemId);
+        console.info("arrItemId==-", arrItemId);
         this.bcl.queryNHAssets({
             NHAssetIds: arrItemId,
-        }).then(function(res){
-            if(res.code === 1){
+        }).then(function (res) {
+            if (res.code === 1) {
                 callback(null, res);
             } else {
                 callback(res.message, res);
@@ -609,14 +597,14 @@ let BCXAdpater = cc.Class({
      * @param callback
      */
     upgradeWeapon: function (weaponId, callback) {
-        console.info("upgradeWeapon==-",playerData.getWeaponLevelById(weaponId));
-        console.info("weaponId==-",weaponId);
+        console.info("upgradeWeapon==-", playerData.getWeaponLevelById(weaponId));
+        console.info("weaponId==-", weaponId);
         this.bcl.callContractFunction({
             nameOrId: this.upgradeContract,
-            functionName: 'equipment_upgrade',//["1",1000001,'COCOS']
-            valueList:[weaponId, playerData.getWeaponLevelById(weaponId)],////
-        }).then(function(res){
-            console.info("upgrade res",JSON.stringify(res));
+            functionName: 'equipment_upgrade', //["1",1000001,'COCOS']
+            valueList: [weaponId, playerData.getWeaponLevelById(weaponId)], ////
+        }).then(function (res) {
+            console.info("upgrade res", JSON.stringify(res));
 
             if (callback) {
                 if (res.code === 1) {
@@ -625,20 +613,20 @@ let BCXAdpater = cc.Class({
                     callback(res.message, res);
                 }
             }
-        }).catch(function(e){
-            console.info("upgradeWeapon error-==",JSON.stringify(e));
+        }).catch(function (e) {
+            console.info("upgradeWeapon error-==", JSON.stringify(e));
         });
     },
 
-    isPC: function() {
+    isPC: function () {
         const userAgentInfo = navigator.userAgent;
         const Agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod'];
         let flag = true;
         for (const v of Agents) {
-          if (userAgentInfo.indexOf(v) > 0) {
-            flag = false;
-            break;
-          }
+            if (userAgentInfo.indexOf(v) > 0) {
+                flag = false;
+                break;
+            }
         }
         return flag;
     }

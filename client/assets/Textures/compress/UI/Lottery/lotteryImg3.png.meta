@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "379bab18-1859-4f07-9dbf-110dd7d319d1",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "lotteryImg3": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "89d18035-247d-43ce-9cd1-07c4014a436b",
       "rawTextureUuid": "379bab18-1859-4f07-9dbf-110dd7d319d1",
       "trimType": "auto",

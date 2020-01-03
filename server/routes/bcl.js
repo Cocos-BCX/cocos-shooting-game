@@ -25,46 +25,7 @@ bclService.init = function () {
     this.arrLotteryBomb = [];
     this.arrLotteryWeapon = [];
     this.arrEmploy = [];
-
-    var _this = this;
     this.count = 0;
-    this.bcl = bclLibs.createBCX({
-         ws_node_list:[
-            {url:"ws://test.cocosbcx.net",name:"Cocos - China - Beijing"},   
-         ],
-         networks:[
-            {
-                core_asset:"COCOS",
-                chain_id:"c1ac4bb7bd7d94874a1cb98b39a8a582421d03d022dfa4be8c70567076e03ad0" 
-            }
-         ], 
-        faucet_url:"http://test-faucet.cocosbcx.net",
-        auto_reconnect:true,
-        real_sub:true,
-        check_cached_nodes_data:false       
-    });
-    
-    this.bcl.init({
-        callback: function (res) {
-        console.log('init finish:', res);
-        _this.login();
-
-    }});
-
-    // this.bclCreate = new BlockChainLib(_configParams);
-    // this.bclCreate.init(function (res) {
-    //     // this.bcl.passwordLogin({
-    //     //     account: "fly2018",
-    //     //     password: "123456",
-    //     //     callback: function (res) {
-    //     //         console.info("bcl passwordLogin res",res);
-    //     //     }
-    //     // });
-    //
-    //     console.log('create init finish:', res);
-    //     _this.loginCreate();
-    //
-    // });
 };
 
 bclService.startCheckTimer = function() {
@@ -462,8 +423,6 @@ bclService.transferGameItem = function (itemId, who, cb) {
         callback:function(res){
             console.info("transferGameItem",res);
             cb(res);
-
-
             _this.checkItem();
         }
     })
@@ -509,6 +468,36 @@ bclService.reqTransToGamer = function (req, response) {
     }).catch(function(e){
         console.info('bcl error-',JSON.stringify(e));
     })
+};
+
+bclService.initBcl = function (req, response) {
+    console.info('node==='+req.query.node);
+    console.info('chainId==='+req.query.chainId);
+    var _this = this;
+    this.bcl = bclLibs.createBCX({
+        ws_node_list:[
+           {url:req.query.node,name:"Cocos - China - Beijing"},   
+        ],
+        networks:[
+           {
+               core_asset:"COCOS",
+               chain_id:req.query.chainId 
+           }
+        ], 
+       faucet_url:"https://faucet.cocosbcx.net",
+       auto_reconnect:true,
+       real_sub:true,
+       check_cached_nodes_data:false       
+   });
+   this.bcl.init({
+       callback: function (res) {
+           if(res.code == 1){
+            response.writeHead(200, { "Content-Type": "text/plain" });
+            response.write(JSON.stringify(res));
+            response.end();
+            _this.login();
+           }
+   }});
 };
 
 /**
@@ -628,6 +617,22 @@ router.get('/money', function(req, res, next) {
 
     bclObj.reqTransToGamer(req, res);
 });
+
+
+router.get('/node', function(req, res, next) {
+    console.log("node--d---")
+    //创建炸弹
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+    bclObj.initBcl(req, res);
+});
+
+
+
+
 
 router.get('/test', function(req, res, next) {
     console.log("test--d---")

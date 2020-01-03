@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "30d6bb10-4de6-4be5-9fb6-a1c03013c398",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "fightImg01": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "7e8d8c93-1e6f-4da6-b894-3a22c33c2373",
       "rawTextureUuid": "30d6bb10-4de6-4be5-9fb6-a1c03013c398",
       "trimType": "auto",

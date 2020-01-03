@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "01b8a856-354b-4f41-a26e-c57ba2a5ca44",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "homeButtonQuestion1": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "22d0db77-bdbc-439d-9343-a2a3993af8ec",
       "rawTextureUuid": "01b8a856-354b-4f41-a26e-c57ba2a5ca44",
       "trimType": "auto",

@@ -1,1 +1,1 @@
-{"__type__":"cc.SpriteFrame","content":{"name":"balanceImg01","texture":"1fc3d96b0","rect":[375,2,72,35],"offset":[0,0],"originalSize":[72,35],"capInsets":[0,0,0,0]}}
+{"__type__":"cc.SpriteFrame","content":{"name":"balanceImg01","texture":"1fc3d96b0","rect":[333,2,72,35],"offset":[0,0],"originalSize":[72,35],"rotated":1,"capInsets":[0,0,0,0]}}

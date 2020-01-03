@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "a8854ce6-6af5-408d-8212-53744b673fca",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "boom63": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "22f82012-d918-4201-909e-b06d83b06d7b",
       "rawTextureUuid": "a8854ce6-6af5-408d-8212-53744b673fca",
       "trimType": "auto",

@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "840b75ce-d82f-489c-8d48-18dd33e50716",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "Bullet08": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "6c86d85e-e568-4df6-a0a8-5e1eba330d24",
       "rawTextureUuid": "840b75ce-d82f-489c-8d48-18dd33e50716",
       "trimType": "auto",

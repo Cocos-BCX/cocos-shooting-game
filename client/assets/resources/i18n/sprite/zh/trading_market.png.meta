@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "0740caa0-c6e8-47f1-ac13-60fff700c99a",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "trading_market": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "b3840214-15b4-46fe-a371-cd7ff11b2c97",
       "rawTextureUuid": "0740caa0-c6e8-47f1-ac13-60fff700c99a",
       "trimType": "auto",

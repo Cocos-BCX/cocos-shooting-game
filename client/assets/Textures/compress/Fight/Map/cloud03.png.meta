@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "899313a3-2dcd-45a0-ae60-84cede837b3a",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "cloud03": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "08776634-b8d6-424c-8281-065b0485bbdc",
       "rawTextureUuid": "899313a3-2dcd-45a0-ae60-84cede837b3a",
       "trimType": "auto",

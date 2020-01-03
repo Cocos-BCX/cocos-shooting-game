@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "73548831-8021-4eec-acb8-7d62aa71ec54",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "commonButtonClose01": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "c3b609b0-4d8f-474b-b27f-375d791b789a",
       "rawTextureUuid": "73548831-8021-4eec-acb8-7d62aa71ec54",
       "trimType": "auto",

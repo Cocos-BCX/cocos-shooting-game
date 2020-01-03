@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "5feb4938-25e6-4347-97e6-03661f6f64c4",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "homeButtonPlay2": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "51e96ceb-7fe6-4aeb-a641-d4fd3bb614b2",
       "rawTextureUuid": "5feb4938-25e6-4347-97e6-03661f6f64c4",
       "trimType": "auto",

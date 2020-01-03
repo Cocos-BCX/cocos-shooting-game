@@ -122,7 +122,6 @@ cc.Class({
                 //SDK初始华完毕
                 cc.gameSpace.isInitFinished = true;
                 console.log("bcxAdapter.initSDK====")
-
                 bcxAdapter.login(function (err) {
                     console.log("bcxAdapter.initSDK=1==",err)
                     if (err) {

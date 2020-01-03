@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "0a6edbcc-af20-4e17-95f3-4dd23327cd24",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "Enemy0_0": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "e1d390a4-8160-47a4-b4cf-030bfb3fb3a6",
       "rawTextureUuid": "0a6edbcc-af20-4e17-95f3-4dd23327cd24",
       "trimType": "auto",

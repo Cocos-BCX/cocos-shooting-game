@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "fa744eda-471e-4a02-9701-fc6e4387433c",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "magnet2": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "cd19bb53-41df-4ffc-a51d-e142f6188466",
       "rawTextureUuid": "fa744eda-471e-4a02-9701-fc6e4387433c",
       "trimType": "auto",

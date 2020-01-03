@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "a9f18e86-c3b7-4064-a540-d0290454f8c4",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "mooncake": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "d1a1529f-8fe8-48f9-8c5c-372c8e4380be",
       "rawTextureUuid": "a9f18e86-c3b7-4064-a540-d0290454f8c4",
       "trimType": "auto",

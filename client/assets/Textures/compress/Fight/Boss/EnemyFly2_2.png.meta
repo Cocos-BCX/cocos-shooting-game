@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "31e9e3cc-bf91-47e2-b7ac-4439dc8efc49",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "EnemyFly2_2": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "73b125f2-ae49-4d2e-bb1e-1c7bd6dd65aa",
       "rawTextureUuid": "31e9e3cc-bf91-47e2-b7ac-4439dc8efc49",
       "trimType": "auto",

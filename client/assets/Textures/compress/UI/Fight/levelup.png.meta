@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "ba8fd39d-4e9f-414a-821a-d2be334b2d83",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "levelup": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "950e95d1-e0e0-4eeb-97e4-e6655fb850a6",
       "rawTextureUuid": "ba8fd39d-4e9f-414a-821a-d2be334b2d83",
       "trimType": "auto",

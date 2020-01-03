@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "bcab676c-25c2-45ca-8291-849f9bd08255",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "homeIconSale": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "7ac857f8-803c-450c-b841-530a6e5c3a93",
       "rawTextureUuid": "bcab676c-25c2-45ca-8291-849f9bd08255",
       "trimType": "auto",
